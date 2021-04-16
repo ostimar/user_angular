@@ -1,11 +1,46 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { DefaultLayoutComponent } from './containers/default-layout/default-layout.component';
+import { LoginComponent } from './views/login/login.component';
+import { UserAddComponent } from './views/user-add/user-add.component';
+import { UserListComponent } from './views/user-list/user-list.component';
 
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: {
+      title: 'Login Page'
+    }
+    },
+    {
+      path: '',
+      component: DefaultLayoutComponent,
+      children:
+      [
+        {
+          path: 'list',
+          component: UserListComponent
+        },
+        {
+          path: 'add',
+          component: UserAddComponent
+        }
+      ]
+
+    }
+  
+
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule { } 

@@ -1,0 +1,39 @@
+<div class="app-body">
+    <main class="main d-flex align-items-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+            <div class="card-group">
+              <div class="card p-4">
+                <div class="card-body">
+                  <form id="login-form" [formGroup]="loginForm" (ngSubmit)="submitLogin()" novalidate>                           
+                    <p class="text-muted">
+                      <span style="color: red;" *ngIf="submitted && error != null">Usuario o password incorrecto</span>
+                    </p>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-user"></i></span>
+                      </div>
+                      <input type="text" class="form-control" formControlName="username" placeholder="Usuario">
+                      <span style="color: red;" *ngIf="submitted && loginForm.controls.username.hasError('required')">Campo obligatorio</span>
+                    </div>
+                    <div class="input-group mb-4">
+                      <span class="input-group-text"><i class="icon-user"></i></span>
+                      <input type="password" class="form-control" formControlName="password" placeholder="Password">
+                      <span style="color: red;" *ngIf="submitted && loginForm.controls.password.hasError('required')">Campo obligatorio</span>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <button type="submit" class="btn btn-dark w-100">ENTRAR</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  

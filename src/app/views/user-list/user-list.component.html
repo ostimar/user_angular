@@ -1,0 +1,18 @@
+<div class="table_resultado">
+    <table class="table table-responsive-sm  table-striped ">
+      <thead>
+      <tr>
+      <th>Nombre</th>
+      <th>Edad</th>
+      <th>Email</th>
+      </tr>
+      </thead>
+      <tbody>  
+        <tr *ngFor="let user of users">
+            <td>{{user.name}}</td>
+            <td>{{user.age}}</td>
+            <td>{{user.email}}</td>    
+        </tr>
+      </tbody>
+    </table>
+</div>
