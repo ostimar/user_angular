@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { User } from './user';
 
 
-export interface User { 
-    user_id?: number;
-    name: string;
-    password: string;
-    email: string;
-    age: number;
+export interface ResponseUsers { 
+    users?: Array<User>;
 }
 

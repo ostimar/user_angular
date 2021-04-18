@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DefaultLayoutComponent } from './containers/default-layout/default-layout.component';
+import { AuthGuardService } from './service/auth-guard.service';
 import { LoginComponent } from './views/login/login.component';
 import { UserAddComponent } from './views/user-add/user-add.component';
 import { UserListComponent } from './views/user-list/user-list.component';
@@ -26,11 +27,13 @@ const routes: Routes = [
       [
         {
           path: 'list',
-          component: UserListComponent
+          component: UserListComponent,
+          canActivate: [AuthGuardService]
         },
         {
           path: 'add',
-          component: UserAddComponent
+          component: UserAddComponent,
+          canActivate: [AuthGuardService]
         }
       ]
 

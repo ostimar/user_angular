@@ -3,15 +3,15 @@
       <thead>
       <tr>
       <th>Nombre</th>
-      <th>Edad</th>
       <th>Email</th>
+      <th class="text-center">Edad</th>
       </tr>
       </thead>
       <tbody>  
         <tr *ngFor="let user of users">
             <td>{{user.name}}</td>
-            <td>{{user.age}}</td>
             <td>{{user.email}}</td>    
+            <td class="text-right">{{user.age}}</td>
         </tr>
       </tbody>
     </table>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { user } from 'src/app/rest/model/user';
+import { UserClass } from 'src/app/model/user.class';
+import { UserService } from 'src/app/rest';
 
 
 @Component({
@@ -9,14 +10,22 @@ import { user } from 'src/app/rest/model/user';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  users:user[] = new Array();
-  constructor() { }
+  users:UserClass[] = new Array();
+  constructor(private userService:UserService) { }
 
   ngOnInit() 
   {
-
-    this.users.push({id:1,name:'test', age:20, email:'Test', password:'test'});
-    this.users.push({id:1,name:'test', age:20, email:'Test', password:'test'});
+    
+    this.userService.userList().subscribe
+    (
+      res =>
+      {
+        this.users = res.users;
+      }
+    );
+    
+    /*this.users.push({user_id:1,name:'test', age:20, email:'Test', password:'test'});
+    this.users.push({user_id:1,name:'test', age:20, email:'Test', password:'test'});*/
 
   }
 

@@ -1,39 +1,39 @@
-<div class="app-body">
-    <main class="main d-flex align-items-center">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 mx-auto">
-            <div class="card-group">
-              <div class="card p-4">
-                <div class="card-body">
-                  <form id="login-form" [formGroup]="loginForm" (ngSubmit)="submitLogin()" novalidate>                           
-                    <p class="text-muted">
-                      <span style="color: red;" *ngIf="submitted && error != null">Usuario o password incorrecto</span>
-                    </p>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="icon-user"></i></span>
-                      </div>
-                      <input type="text" class="form-control" formControlName="username" placeholder="Usuario">
-                      <span style="color: red;" *ngIf="submitted && loginForm.controls.username.hasError('required')">Campo obligatorio</span>
-                    </div>
-                    <div class="input-group mb-4">
-                      <span class="input-group-text"><i class="icon-user"></i></span>
-                      <input type="password" class="form-control" formControlName="password" placeholder="Password">
-                      <span style="color: red;" *ngIf="submitted && loginForm.controls.password.hasError('required')">Campo obligatorio</span>
-                    </div>
-                    <div class="row">
-                      <div class="col-12">
-                        <button type="submit" class="btn btn-dark w-100">ENTRAR</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+
+<div class="container">
+ <div class="row">
+  <div class="col-4 w-100">
   </div>
-  
+  <div class="col-4 mt-5 w-100 text-center">
+  <mat-card>
+    <mat-card-title>Login</mat-card-title>
+     <mat-card-content>
+    <form [formGroup]="loginForm" (ngSubmit)="submitForm()" novalidate> 
+      <div> 
+      <mat-form-field class=" w-75 mb-2">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+            <mat-error>
+             Email incorrecto
+            </mat-error>
+        </mat-form-field>
+      </div> 
+      <div>
+        <mat-form-field class="w-75">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon> 
+          <mat-error>
+              El password no es válido
+          </mat-error>
+      </mat-form-field> 
+    </div> 
+    <button type="submit" class="btn btn-dark w-100" [disabled]="!loginForm.valid">Entrar</button>
+    <div *ngIf="errorSistema" class="alert alert-danger mt-2">
+      Error en el sistema contacte con el Administrador
+    </div>
+       </form> 
+   </mat-card-content>
+  </mat-card>
+  </div>
+</div>
+</div>
