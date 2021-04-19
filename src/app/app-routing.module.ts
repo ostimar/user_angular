@@ -10,7 +10,7 @@ import { UserListComponent } from './views/user-list/user-list.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'list',
     pathMatch: 'full',
   },
   {

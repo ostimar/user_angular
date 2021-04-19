@@ -20,6 +20,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './service/auth.service';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { AuthInterceptorService } from './service/auth-interceptor.service';
+import { NgHttpLoaderModule } from 'ng-http-loader';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { AuthInterceptorService } from './service/auth-interceptor.service';
     MatCardModule,
     MatToolbarModule ,
     MatIconModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    NgHttpLoaderModule.forRoot()
   ],
   providers: [
     [ AuthService],

@@ -3,6 +3,9 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { UserClass } from 'src/app/model/user.class';
 import * as crypto from 'crypto-js'; 
 import { UserService } from 'src/app/rest';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+import { UserVolatileService } from 'src/app/service/user-volatile.service';
 
 @Component({
   selector: 'app-user-add',
@@ -10,40 +13,69 @@ import { UserService } from 'src/app/rest';
   styleUrls: ['./user-add.component.css']
 })
 export class UserAddComponent implements OnInit {
-  submit:boolean=false;
-  message:string;
+  submmitOK:string;
   error:string;
   userForm: FormGroup;
   hide:boolean= true;
   hideConfirm:boolean= true;
-  constructor(public fb: FormBuilder, private userService: UserService) { }
+  constructor(public fb: FormBuilder
+    , private userService: UserService
+    , private router: Router
+    , private userVolatileService: UserVolatileService) { }
 
   submitForm()
   {
     if(this.userForm.valid)
     {
-      this.submit = true;
       this.error = undefined;
-      this.message = undefined;
-      var user:UserClass = new UserClass(this.userForm.value.name, crypto.SHA512(this.userForm.value.password).toString(), this.userForm.value.email, this.userForm.value.age);
-      this.userService.userPost(user).subscribe(
-      
-        (res) => {
-          this.message = "Usuario dado de alta correctamente";
-        },
-
-        (err) => {
-          this.submit = false;        
-          if(err.status == 409)
-          {
-            this.error = "El email ya existe";
-          }else
-          {
-            this.error = "Error";
-          }
-        }
-      );
+      this.submmitOK = undefined;
+      if(environment.PERSISTENT)
+         this.submitP();
+      else
+        this.submitV();      
     }
+  }
+
+  submitP()
+  {
+    var user:UserClass = new UserClass(this.userForm.value.name, crypto.SHA512(this.userForm.value.password).toString(), this.userForm.value.email, this.userForm.value.age);
+    this.userService.userPost(user).subscribe(      
+      (res) => {
+        this.submmitOK = "Usuario dado de alta correctamente";
+      },
+
+      (err) => {
+        if(err.status == 409)
+        {
+          this.error = "El email ya existe";
+          this.userForm.controls['email'].setErrors({'El email ya existe': true}); 
+        }else
+        {
+          this.error = "Error";
+        }
+      }
+    );
+  }
+
+  submitV()
+  {
+    var user:UserClass = new UserClass(this.userForm.value.name, this.userForm.value.password, this.userForm.value.email, this.userForm.value.age);
+    this.userVolatileService.add(user).subscribe(      
+      (res) => {
+        this.submmitOK = "Usuario dado de alta correctamente";
+      },
+
+      (err) => {
+        if(err === '409')
+        {
+          this.error = "El email ya existe";
+          this.userForm.controls['email'].setErrors({'El email ya existe': true}); 
+        }else
+        {
+          this.error = "Error";
+        }
+      }
+    );
   }
 
   numberOnly(event): boolean {
@@ -77,6 +109,10 @@ export class UserAddComponent implements OnInit {
 }
 
 
+  reload()
+  {
+    window.location.reload();
+  }
   ngOnInit() {
     this.reactiveForm();
   }

@@ -4,6 +4,8 @@ import { AdminService } from 'src/app/rest';
 import * as crypto from 'crypto-js'; 
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/service/auth.service';
+import { UserVolatileService } from 'src/app/service/user-volatile.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -17,50 +19,74 @@ export class LoginComponent implements OnInit {
   hide = true;
   
   constructor(public fb: FormBuilder, public adminService:AdminService
-    ,private router:Router, private authService: AuthService) { }
+    ,private router:Router, private authService: AuthService, private userVolatileService:UserVolatileService) { }
 
   submitForm(){
      if(this.loginForm.valid)
      {       
       this.error = null;
       this.errorSistema = false;
-      this.authService.login(this.loginForm.value.email, 
-        crypto.SHA512(this.loginForm.value.password).toString()).subscribe
-      (
-          (res) => {
-            console.log(this.authService.isAuthenticated());
-            this.router.navigate(['/list']); 
-          },
-        (err) => {
-            switch(err.status)
-            {
-              case 404:
-                this.loginForm.controls['email'].setErrors({'Email incorrecto': true});
-                break;
-              case 403:
-                this.loginForm.controls['password'].setErrors({'Email incorrecto': true}); 
-                break;
-              default:
-                this.errorSistema = true;
-                break;
-            } 
-            this.error = err.status;
-        }
-        );
+      if(environment.PERSISTENT)
+       this.submitFormP();
+      else
+       this.submitFormV();
       }
-          /*this.adminService.loginGet(this.loginForm.value.email, 
-            crypto.SHA512(this.loginForm.value.password).toString()).subscribe(
-              res =>
-              {
-                this.router.navigate(['/list']);
-              },
-              err =>
-              {
-                this.router.navigate(['/add']);
-              }
-        );*/
      
   };
+
+  submitFormP()
+  {
+    this.authService.login(this.loginForm.value.email, 
+      crypto.SHA512(this.loginForm.value.password).toString()).subscribe
+    (
+        (res) => {
+          console.log(this.authService.isAuthenticated());
+          this.router.navigate(['/list']); 
+        },
+      (err) => {
+          switch(err.status)
+          {
+            case 404:
+              this.loginForm.controls['email'].setErrors({'Email incorrecto': true});
+              break;
+            case 403:
+              this.loginForm.controls['password'].setErrors({'Password incorrecto': true}); 
+              break;
+            default:
+              this.errorSistema = true;
+              break;
+          } 
+          this.error = err.status;
+      }
+      );
+  }
+
+  submitFormV()
+  {
+    this.userVolatileService.login(this.loginForm.value.email, 
+      this.loginForm.value.password).subscribe
+    (
+        (res) => {
+          this.router.navigate(['/list']); 
+        },
+      (err) => {
+          switch(err)
+          {
+            case '404':
+              this.loginForm.controls['email'].setErrors({'Email incorrecto': true});
+              break;
+            case '403':
+              this.loginForm.controls['password'].setErrors({'Password incorrecto': true}); 
+              break;
+            default:
+              this.errorSistema = true;
+              break;
+          } 
+          this.error = err.status;
+      }
+      );
+  }
+
 
 
   reactiveForm() {
@@ -71,9 +97,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userVolatileService.initUsers();
     this.reactiveForm();
-
-
   }
 
 }

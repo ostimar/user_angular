@@ -3,7 +3,9 @@ import {Router} from "@angular/router";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import {Observable, Subject, throwError} from "rxjs";
 import {tap, catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { AdminService } from '../rest';
+import { UserVolatileService } from './user-volatile.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,8 +13,7 @@ import { AdminService } from '../rest';
 export class AuthService {
 
 
-
-  constructor(private adminService: AdminService,
+  constructor(private adminService: AdminService,private userVolatileService: UserVolatileService,
     private helper: JwtHelperService,
     private router: Router) { }
 
@@ -39,16 +40,22 @@ export class AuthService {
   }
   logout()
   {
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("user");
+    if(environment.PERSISTENT)
+    {
+      localStorage.removeItem("id_token");
+      localStorage.removeItem("user");
+    }else
+    {
+      this.userVolatileService.logout();
+    }
   }
 
   isAuthenticated(): boolean {
-
+    if(!environment.PERSISTENT)
+      return this.userVolatileService.isAuthenticated;
     if( localStorage.getItem("id_token") == null || this.helper.isTokenExpired(localStorage.getItem("id_token")))
-      return false;
-
-    return true;
+        return false;
+     return true;
   };
 
 
@@ -57,18 +64,6 @@ export class AuthService {
     return JSON.parse(localStorage.getItem("user"));
   }
 
-  isAuthorized(allowedRoles: string[]): boolean {
-    /* if (allowedRoles == null || allowedRoles.length === 0) {
-      return true;
-      }
-  
-      let user = localStorage.getItem('user');
-      if(this.getCurrentUser().rol == null)
-        return false;
-   
-      return allowedRoles.includes(this.getCurrentUser().rol.toString());*/
-    return true;
 
-    }
  
 }
