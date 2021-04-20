@@ -11,8 +11,8 @@
       <mat-form-field class=" w-75 mb-2">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email">
-            <mat-error>
-             Email incorrecto
+            <mat-error  *ngIf="!errorSistema">
+               Email incorrecto
             </mat-error>
         </mat-form-field>
       </div> 
@@ -21,14 +21,14 @@
           <mat-label>Password</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon> 
-          <mat-error>
+          <mat-error *ngIf="!errorSistema">
               El password no es válido
           </mat-error>
       </mat-form-field> 
     </div> 
     <button type="submit" class="btn btn-dark w-100" [disabled]="!loginForm.valid">Entrar</button>
     <div *ngIf="errorSistema" class="alert alert-danger mt-2">
-      Error en el sistema contacte con el Administrador
+      {{message}}
     </div>
        </form> 
    </mat-card-content>

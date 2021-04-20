@@ -58,10 +58,12 @@ export class Configuration {
             this.credentials = {};
         }
 
-        // init default ApiKeyAuth credential
-        if (!this.credentials['ApiKeyAuth']) {
-            this.credentials['ApiKeyAuth'] = () => {
-                return this.apiKeys['ApiKeyAuth'] || this.apiKeys['auth'];
+        // init default auth credential
+        if (!this.credentials['auth']) {
+            this.credentials['auth'] = () => {
+                return typeof this.accessToken === 'function'
+                    ? this.accessToken()
+                    : this.accessToken;
             };
         }
     }

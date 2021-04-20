@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   loginForm:FormGroup;
   errorSistema:boolean=false;
   hide = true;
-  
+  message:string;  
   constructor(public fb: FormBuilder, public adminService:AdminService
     ,private router:Router, private authService: AuthService, private userVolatileService:UserVolatileService) { }
 
@@ -44,16 +44,19 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/list']); 
         },
       (err) => {
+          this.errorSistema = true;
           switch(err.status)
           {
             case 404:
-              this.loginForm.controls['email'].setErrors({'Email incorrecto': true});
+              this.loginForm.controls['email'].setErrors({'': true});
+              this.message = "El usuario no existe";
               break;
             case 403:
-              this.loginForm.controls['password'].setErrors({'Password incorrecto': true}); 
+              this.loginForm.controls['password'].setErrors({'': true});
+              this.message = "Password incorrecto"; 
               break;
             default:
-              this.errorSistema = true;
+              this.message = "Error en el sistema contacte con el Administrador";
               break;
           } 
           this.error = err.status;
@@ -70,24 +73,25 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/list']); 
         },
       (err) => {
+           this.errorSistema = true;
           switch(err)
           {
             case 404:
-              this.loginForm.controls['email'].setErrors({'Email incorrecto': true});
+              this.loginForm.controls['email'].setErrors({'': true});
+              this.message = "El usuario no existe";
               break;
             case 403:
-              this.loginForm.controls['password'].setErrors({'Password incorrecto': true}); 
+              this.loginForm.controls['password'].setErrors({'': true}); 
+              this.message = "Password incorrecto"; 
               break;
             default:
-              this.errorSistema = true;
+              this.message = "Error en el sistema contacte con el Administrador";
               break;
           } 
           this.error = err.status;
       }
       );
   }
-
-
 
   reactiveForm() {
     this.loginForm = this.fb.group({
@@ -97,7 +101,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userVolatileService.initUsers();
+    if(!environment.PERSISTENT){
+      this.userVolatileService.initUsers();}
     this.reactiveForm();
   }
 
