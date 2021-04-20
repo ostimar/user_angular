@@ -24,7 +24,7 @@ export class UserVolatileService {
  public add(user:UserClass):Observable<UserClass>
  {
    if(this.get(user.email)  != undefined)
-       return throwError("409");
+       return throwError(409);
     var users = JSON.parse(sessionStorage.getItem(UserVolatileService.USERS_ARRAY));
     users.push(user);
     sessionStorage.setItem(UserVolatileService.USERS_ARRAY, JSON.stringify(users));
@@ -46,9 +46,9 @@ export class UserVolatileService {
   {
     var user:UserClass = this.get(email);
     if(user === undefined)
-      return throwError("404");
+      return throwError(404);
     if(user.password !== password)
-       return throwError("403");
+       return throwError(403);
     this.isAuthenticated = true;
     return of(user);
   }

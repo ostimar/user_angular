@@ -66,7 +66,7 @@ export class UserAddComponent implements OnInit {
       },
 
       (err) => {
-        if(err === '409')
+        if(err == 409)
         {
           this.error = "El email ya existe";
           this.userForm.controls['email'].setErrors({'El email ya existe': true}); 

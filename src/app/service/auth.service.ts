@@ -48,6 +48,7 @@ export class AuthService {
     {
       this.userVolatileService.logout();
     }
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {

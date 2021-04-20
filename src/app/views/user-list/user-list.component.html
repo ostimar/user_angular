@@ -1,18 +1,25 @@
-<div class="table_resultado">
-    <table class="table table-responsive-sm  table-striped ">
-      <thead>
-      <tr>
-      <th>Nombre</th>
-      <th>Email</th>
-      <th class="text-center">Edad</th>
-      </tr>
-      </thead>
-      <tbody>  
-        <tr *ngFor="let user of users">
-            <td>{{user.name}}</td>
-            <td>{{user.email}}</td>    
-            <td class="text-right">{{user.age}}</td>
-        </tr>
-      </tbody>
-    </table>
+<div class="mat-elevation-z8 mt-2">
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100" matSort>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let user"> {{user.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+      <mat-cell *matCellDef="let user"> {{user.email}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="age">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Edad </mat-header-cell>
+      <mat-cell class="text-right" mat-cell *matCellDef="let user"> {{user.age}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="col_users"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: col_users;"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+
 </div>
+

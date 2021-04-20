@@ -72,10 +72,10 @@ export class LoginComponent implements OnInit {
       (err) => {
           switch(err)
           {
-            case '404':
+            case 404:
               this.loginForm.controls['email'].setErrors({'Email incorrecto': true});
               break;
-            case '403':
+            case 403:
               this.loginForm.controls['password'].setErrors({'Password incorrecto': true}); 
               break;
             default:

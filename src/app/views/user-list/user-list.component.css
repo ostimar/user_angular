@@ -1,0 +1,4 @@
+.mat-header-cell, .mat-cell {
+    flex-direction: column;
+    justify-content: center !important;
+  }

@@ -4,7 +4,7 @@
         <div class="col-lg-4 col-sm-12 col-md-12 col-xs-12 w-100">
             <h2 class="text-center">Alta de usuario</h2>
             <div *ngIf="submmitOK">
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success text-center" role="alert">
                     {{submmitOK}}  
                 </div>
                 <div class="text-center">
@@ -15,7 +15,7 @@
             <div *ngIf="error" class="alert alert-danger" role="alert">
                 {{error}}
             </div>
-            <div class="container text-center">
+            <div *ngIf="!submmitOK" class="container text-center">
                 <form [formGroup]="userForm" (ngSubmit)="submitForm()" novalidate>
                     <!-- <div class="row"> -->
                         <div>
