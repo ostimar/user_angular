@@ -18,6 +18,7 @@ export class UserListComponent implements OnInit {
   col_users: string[] = ['name', 'email', 'age'];
   users:UserClass[] = new Array();
   dataSource = null;
+  errorMessage:string;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -34,6 +35,7 @@ export class UserListComponent implements OnInit {
   }
   ngOnInit() 
   {
+    this.errorMessage=undefined;
     if(environment.PERSISTENT)
     {
       this.userService.userList().subscribe
@@ -41,6 +43,10 @@ export class UserListComponent implements OnInit {
         res =>
         {
          this.initTable(res.users);         
+        },
+        (err) => 
+        {
+          this.errorMessage = "Error";
         }
       );
     }else
@@ -50,7 +56,12 @@ export class UserListComponent implements OnInit {
         res =>
         {
           this.initTable(res); 
+        },
+        (err) => 
+        {
+          this.errorMessage = "Error";
         }
+     
       );
     }
   }

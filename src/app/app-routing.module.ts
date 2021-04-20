@@ -18,9 +18,9 @@ const routes: Routes = [
     component: LoginComponent,
     data: {
       title: 'Login Page'
-    }
-    },
-    {
+   }
+   },
+   {
       path: '',
       component: DefaultLayoutComponent,
       children:
