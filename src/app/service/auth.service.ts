@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Router} from "@angular/router";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import {Observable, Subject, throwError} from "rxjs";
-import {tap, catchError } from 'rxjs/operators';
+import {tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AdminService } from '../rest';
 import { UserVolatileService } from './user-volatile.service';
